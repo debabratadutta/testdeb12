@@ -196,65 +196,65 @@ function sendStartingMessage(recipientId) {
 function sendSndMessage(recipientId,anstype) {
   if(anstype){
     var messageData = {
-    recipient: {
-      id: recipientId
-    },
+      recipient: {
+        id: recipientId
+      },
       "message":{
         "attachment":{
           "type":"template",
           "payload":{
             "template_type":"button",
+            "text":" ",
             "buttons":[
               
-              {
-                "type":"postback",
-                "title":"Want a peek in our website? That’s like our Analyzopedia!",
-                "payload":"website3rdConv"
-              },
-              {
-                "type":"postback",
-                "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
-                "payload":"videos3rdConv"
-              }
+                {
+                  "type":"postback",
+                  "title":"Want a peek in our website? That’s like our Analyzopedia!",
+                  "payload":"website3rdConv"
+                },
+                {
+                  "type":"postback",
+                  "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
+                  "payload":"videos3rdConv"
+                }
             ]
           }
         }
       }
-    }; 
-  }else{
+    };
+  } else{
     var messageData = {
-    recipient: {
-      id: recipientId
-    },
+      recipient: {
+        id: recipientId
+      },
       "message":{
         "attachment":{
           "type":"template",
           "payload":{
             "template_type":"button",
-            "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+            "text":" ",
             "buttons":[
               
-              {
-                "type":"postback",
-                "title":"Okay then! How can I help then?",
-                "payload":"howcan3rdConv"
-              },
-              {
-                "type":"postback",
-                "title":"No, not now.",
-                "payload":"no2ndConv"
-              }
+                {
+                  "type":"postback",
+                  "title":"Want a peek in our website? That’s like our Analyzopedia!",
+                  "payload":"website3rdConv"
+                },
+                {
+                  "type":"postback",
+                  "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
+                  "payload":"videos3rdConv"
+                }
             ]
           }
         }
       }
-    }; 
-
-  }
-   
+    };
+  } 
 
   callSendAPI(messageData);
 }
+  
 function sendGenericMessage(recipientId) {
   var messageData = {
     recipient: {
