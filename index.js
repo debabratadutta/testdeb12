@@ -134,7 +134,6 @@ function receivedPostbackMessage(event) {
   var postbackReferral = postback.referral;
   var typeMsg="postback";
   var user = {
-      dtaMsg: postbackTitle,      
       dtaPayload: postbackReferral,
       dtaTyp:typeMsg,
       timeMsg: timeOfMessage
@@ -146,10 +145,10 @@ function receivedPostbackMessage(event) {
             if (postbackPayload) {
               switch (postbackPayload) {
                 case 'yes2ndConv':
-                  sendSndMessage(recipientId,true);
+                  sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                  sendSndMessage(recipientId,false);
+                  sendSndMessage(senderID,false);
                   break;
 
                 default:
