@@ -192,4 +192,3 @@ app.listen(app.get('port'), function() {
 });
 
 //module.exports = app;
-Our mission is to simplify all your needs and accept your challenge to give you better support
