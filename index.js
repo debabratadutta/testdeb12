@@ -152,7 +152,7 @@ function receivedPostbackMessage(event) {
                   break;
 
                 default:
-                  sendTextMessage(senderID, postbackPayloadg+" DD");
+                  sendTextMessage(senderID, " DD");
               }
             } 
       } 
