@@ -128,10 +128,10 @@ function receivedPostbackMessage(event) {
   senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(postback));
 
-  var postbackTitle = postback.title;
+  var postbackTitleg = postback.title;
 
-  var postbackPayload = postback.payload;
-  var postbackReferral = postback.referral;
+  var postbackPayloadg = postback.payload;
+  var postbackReferralg = postback.referral;
   var typeMsg="postback";
   var user = {
       dtaPayload: postback,
@@ -142,8 +142,8 @@ function receivedPostbackMessage(event) {
   ref.child(senderID).once('value', function(snapshot){
       if (snapshot.exists()) {
           ref.child(senderID+"/allmessage").push(user);
-            if (postbackPayload) {
-              switch (postbackPayload) {
+            if (postbackPayloadg) {
+              switch (postbackPayloadg) {
                 case 'yes2ndConv':
                   sendSndMessage(senderID,true);
                   break;                
@@ -152,7 +152,7 @@ function receivedPostbackMessage(event) {
                   break;
 
                 default:
-                  sendTextMessage(senderID, postbackPayload+" DD");
+                  sendTextMessage(senderID, postbackPayloadg+" DD");
               }
             } 
       } 
