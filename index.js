@@ -44,7 +44,9 @@ app.post('/webhook', function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.message) {
           receivedMessage(event);
-        } else {
+        }else if(event.postback){
+          receivedPostbackMessage(event);
+        }else {
           console.log("Webhook received unknown event: ", event);
         }
       });
@@ -81,8 +83,7 @@ function receivedMessage(event) {
   ref.child(senderID).once('value', function(snapshot){
       if (snapshot.exists()) {
           ref.child(senderID+"/allmessage").push(user);
-
-          if (messageText) {
+            if (messageText) {
               switch (messageText) {
                 case 'generic':
                   sendGenericMessage(senderID);
@@ -94,6 +95,18 @@ function receivedMessage(event) {
             } else if (messageAttachments) {
               sendTextMessage(senderID, "Message with attachment received");
             }
+            /*if (messageText) {
+              switch (messageText) {
+                case 'generic':
+                  sendGenericMessage(senderID);
+                  break;
+
+                default:
+                  sendTextMessage(senderID, messageText);
+              }
+            } else if (messageAttachments) {
+              sendTextMessage(senderID, "Message with attachment received");
+            }*/
       } else {
           var payload = {};
               payload[senderID+"/allmessage"] = user;
@@ -104,7 +117,68 @@ function receivedMessage(event) {
 
   
 }
+//POST BACK
+function receivedPostbackMessage(event) {
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+  var postback = event.postback;
+  
+  console.log("Received postback for user %d and page %d at %d with message:", 
+  senderID, recipientID, timeOfMessage);
+  console.log(JSON.stringify(postback));
 
+  var postbackTitle = postback.title;
+
+  var postbackPayload = postback.payload;
+  var postbackReferral = postback.referral;
+  var typeMsg="postback";
+  var user = {
+      dtaMsg: postbackTitle,      
+      dtaPayload: postbackReferral,
+      dtaTyp:typeMsg,
+      timeMsg: timeOfMessage
+  };
+  var ref = db.ref("users");
+  ref.child(senderID).once('value', function(snapshot){
+      if (snapshot.exists()) {
+          ref.child(senderID+"/allmessage").push(user);
+            if (postbackPayload) {
+              switch (postbackPayload) {
+                case 'yes2ndConv':
+                  sendSndMessage(recipientId,true);
+                  break;                
+                case 'no2ndConv':
+                  sendSndMessage(recipientId,false);
+                  break;
+
+                default:
+                  sendTextMessage(senderID, messageText);
+              }
+            } 
+            /*if (messageText) {
+              switch (messageText) {
+                case 'generic':
+                  sendGenericMessage(senderID);
+                  break;
+
+                default:
+                  sendTextMessage(senderID, messageText);
+              }
+            } else if (messageAttachments) {
+              sendTextMessage(senderID, "Message with attachment received");
+            }*/
+      } else {
+          var payload = {};
+              payload[senderID+"/allmessage"] = user;
+          ref.update(payload);
+          sendStartingMessage(senderID);
+      }
+  });
+
+  
+}
+//MY 1st Text
 function sendStartingMessage(recipientId) {
   var messageData = {
     recipient: {
@@ -115,7 +189,7 @@ function sendStartingMessage(recipientId) {
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text":"Hello! :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+          "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
           "buttons":[
             
             {
@@ -133,6 +207,69 @@ function sendStartingMessage(recipientId) {
       }
     }
   };  
+
+  callSendAPI(messageData);
+}
+//MY 2nd Text
+function sendSndMessage(recipientId,anstype) {
+  if(anstype){
+    var messageData = {
+    recipient: {
+      id: recipientId
+    },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "buttons":[
+              
+              {
+                "type":"postback",
+                "title":"Want a peek in our website? That’s like our Analyzopedia!",
+                "payload":"website3rdConv"
+              },
+              {
+                "type":"postback",
+                "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
+                "payload":"videos3rdConv"
+              }
+            ]
+          }
+        }
+      }
+    }; 
+  }else{
+    var messageData = {
+    recipient: {
+      id: recipientId
+    },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+            "buttons":[
+              
+              {
+                "type":"postback",
+                "title":"Okay then! How can I help then?",
+                "payload":"howcan3rdConv"
+              },
+              {
+                "type":"postback",
+                "title":"No, not now.",
+                "payload":"no2ndConv"
+              }
+            ]
+          }
+        }
+      }
+    }; 
+
+  }
+   
 
   callSendAPI(messageData);
 }
