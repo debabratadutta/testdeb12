@@ -13,7 +13,18 @@
 const  express = require('express');
 const  bodyParser = require('body-parser');
 const  request = require('request');
+const admin = require("firebase-admin");
 const  app = express();
+var serviceAccount = require("config/serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: "mybotdata",
+    clientEmail: "mybotdata@appspot.gserviceaccount.com",
+    privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDmVkNQ79eo/Edn\nNyoASQTbL7s00D/GJeWAWr1DOjr1Zx+O6BIX23QRn0llvSQDaunCN7CGT3JF88vF\nzFSzUElHQd09TbW2rBFEQLSIfrmWremkwVkvAiswLzdQCxiwv6pNhu+RVqmYTUzZ\nN17elNZIi2gWatYC493QaoC4JGWfqROXJO/RpKARZjTn5sCPPerZrPGuAsJIaLM/\n6V7wjpcmt74qOYtQeJJs0TZi0tdWv6XwBV0wFhRp0keaXXiKbTm8gyDvqkrXR7xL\n2qWBGaBlEupiwGnZBAbiRBXRKqPsDjaqI8tVtBWEFveaGlC4QlOum62EEuT209En\nI09BMMq9AgMBAAECggEAHrn6L+VW0QmaYtf2h+Q1vCGRaRmwsDek9mrkXX/6lnsD\nuDYYF8ukH6eujF5fW/9aoJh6OWiGt3MuxzubPvJiXBmasE9aArzQbtjs3Fp/Wmzn\nwp0yTvWMmlhqGgjo6ccfqkjqU2qKpDEHo+BhjPKw5SuHnpnw46DPGbrjYe0lC1er\nXkPuQWoaFcNKor/+WX13J+E417JLeSH80qwEwMk+CTZytWbMb2MCjq9SCLWsBK6h\nCnEpEaoYuZSP594D1dsg/tKtd+MbcgrGRDuUWwOO1N4DJwMMlPF70nN+U/k6XIq/\ndj4XLOKURFXoy8GlCRv9Qe8tB/iamVkXVnFjw2l3NwKBgQD6jS+Aqhl8KvElzVmS\n9dSLvAcaSlDXh9n9/UeWGF0i4WseOhvqexZh2yCJta8KZnrATUUEOewL/zy9ApQN\njYF+a5GRqDMmK3W4Km1u6mCyFfjFhWwo1zQ7LmBxVy7FBA80ESG8rgeLmmVecMx+\nmEOp4pDETZOUFkwTbLkmJpLbewKBgQDrWIsjmJ7+XUYI4UlIyc5RW5GWECnSo+9p\n+JEyx1skhZbFCv8itaDp9sLpM6vLlMl+wCFUeM1UGxMPY9Po4EipysvsaNDPdJou\nNX1NHmO5Xm+aiNgM8YdjOb5m5ZvuqrSH2MiBYi4FNU9aPlwSnJcJjV2tokREJ8Sz\niXZ3u4uhJwKBgG474+R18lSBCCwblwdjhSodhfp5K+xH5w8qem59Naz9BIX+Bv45\nPXW8VSqBdwvaXrNwy6a6XTJCD9UQ51a3JXwbk6ZEHIz0ngxzDka4c+amaBdvRlEJ\nrf9DvkbflsIzsQS1bOR4pPU07tiIRFCGaW67MfpML1v+G2aIdUVlv0M1AoGAA3KI\nlzzlF1TGcdra9/X8z7RHrasO8cb0+thpSBUjgKV0T+6ZTija8pJqyH+5RIIpcXHf\nCx255EGBRfhwYjjm15Xg5tWiOWe72nFuJHMNgumfOORIRehD03BFGbzDS/u0KUlD\npqGJiwn835WKQ7uHetxXQvPdjCII/5hD4/0bToECgYEAlwCV+HbJxcrKzRgYxFUU\nA0+28HxZqSh7F3f7Jit/JJAa4AYnw+znbZlTaLnFJEgthg2ay5YPhYbyIGkNB8hu\njQ2Fwry0PWqGeCtXQonHetvjkha7gQZx7dnC/gCrq+DXmeXyk4wFq+EMq+nZtQV2\nHe9jc491LiXkyNhxBZpbM9U=\n-----END PRIVATE KEY-----\n"
+  }),
+  databaseURL: "https://mybotdata.firebaseio.com/"
+});
+
 
 const token = process.env.FB_VERIFY_TOKEN
 const access= process.env.FB_ACCESS_TOKEN
@@ -36,11 +47,7 @@ app.get('/webhook/',function(req,res){
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
-
-  // Make sure this is a page subscription
   if (data.object === 'page') {
-
-    // Iterate over each entry - there may be multiple if batched
     data.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
@@ -55,11 +62,6 @@ app.post('/webhook', function (req, res) {
       });
     });
 
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
     res.sendStatus(200);
   }
 });
@@ -69,9 +71,22 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-
+  var user = {
+      dtaMsg: message,
+      timeMsg: timeOfMessage
+  };
+  var db = admin.database();
+  db.child('users').child(senderID).once('value', function(snapshot){
+      if (snapshot.exists()) {
+          snapshot.ref().update(user);
+      } else {
+          var payload = {};
+              payload[senderID] = user;
+          snapshot.ref().parent().update(payload);
+      }
+  });
   console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
+  senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
   var messageId = message.mid;
@@ -80,9 +95,6 @@ function receivedMessage(event) {
   var messageAttachments = message.attachments;
 
   if (messageText) {
-
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the example. Otherwise, just echo the text we received.
     switch (messageText) {
       case 'generic':
         sendGenericMessage(senderID);
@@ -174,8 +186,10 @@ function callSendAPI(messageData) {
     }
   });  
 }
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
 
 //module.exports = app;
+Our mission is to simplify all your needs and accept your challenge to give you better support
