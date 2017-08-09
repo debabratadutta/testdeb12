@@ -15,7 +15,7 @@ const  bodyParser = require('body-parser');
 const  request = require('request');
 const admin = require("firebase-admin");
 const  app = express();
-var serviceAccount = require("config/serviceAccountKey.json");
+//const serviceAccount = require("config/serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: "mybotdata",
@@ -24,7 +24,7 @@ admin.initializeApp({
   }),
   databaseURL: "https://mybotdata.firebaseio.com/"
 });
-
+const db = admin.database();
 
 const token = process.env.FB_VERIFY_TOKEN
 const access= process.env.FB_ACCESS_TOKEN
@@ -75,14 +75,15 @@ function receivedMessage(event) {
       dtaMsg: message,
       timeMsg: timeOfMessage
   };
-  var db = admin.database();
-  db.child('users').child(senderID).once('value', function(snapshot){
+  
+  var ref = db.ref("users");
+  ref.child(senderID).once('value', function(snapshot){
       if (snapshot.exists()) {
-          snapshot.ref().update(user);
+          ref.child(senderID).update(user);
       } else {
           var payload = {};
               payload[senderID] = user;
-          snapshot.ref().parent().update(payload);
+          ref.update(payload);
       }
   });
   console.log("Received message for user %d and page %d at %d with message:", 
