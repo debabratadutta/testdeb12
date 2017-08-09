@@ -145,10 +145,10 @@ function receivedPostbackMessage(event) {
             if (postbackPayloadg) {
               switch (postbackPayloadg) {
                 case 'yes2ndConv':
-                  sendSndMessage(senderID,true);
+                   sendTextMessage(senderID, "YSSS");//sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                  sendSndMessage(senderID,false);
+                   sendTextMessage(senderID, "NOPP");//sendSndMessage(senderID,false);
                   break;
 
                 default:
