@@ -1,13 +1,3 @@
-/*
- * Copyright 2016-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-/* jshint node: true, devel: true */
 'use strict';
 
 const  express = require('express');
@@ -51,8 +41,6 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function(entry) {
       var pageID = entry.id;
       var timeOfEvent = entry.time;
-
-      // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
           receivedMessage(event);
@@ -71,21 +59,7 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
-  var user = {
-      dtaMsg: message,
-      timeMsg: timeOfMessage
-  };
   
-  var ref = db.ref("users");
-  ref.child(senderID).once('value', function(snapshot){
-      if (snapshot.exists()) {
-          ref.child(senderID+"/allmessage").push(user);
-      } else {
-          var payload = {};
-              payload[senderID+"/allmessage"] = user;
-          ref.update(payload);
-      }
-  });
   console.log("Received message for user %d and page %d at %d with message:", 
   senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
@@ -94,19 +68,73 @@ function receivedMessage(event) {
 
   var messageText = message.text;
   var messageAttachments = message.attachments;
-
-  if (messageText) {
-    switch (messageText) {
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+  var typeMsg="text";
+  if(messageAttachments){
+    typeMsg="attachments";
   }
+  var user = {
+      dtaMsg: message,
+      dtaTyp:message.text,
+      timeMsg: timeOfMessage
+  };
+  var ref = db.ref("users");
+  ref.child(senderID).once('value', function(snapshot){
+      if (snapshot.exists()) {
+          ref.child(senderID+"/allmessage").push(user);
+
+          if (messageText) {
+              switch (messageText) {
+                case 'generic':
+                  sendGenericMessage(senderID);
+                  break;
+
+                default:
+                  sendTextMessage(senderID, messageText);
+              }
+            } else if (messageAttachments) {
+              sendTextMessage(senderID, "Message with attachment received");
+            }
+      } else {
+          var payload = {};
+              payload[senderID+"/allmessage"] = user;
+          ref.update(payload);
+          sendStartingMessage(senderID);
+      }
+  });
+
+  
+}
+
+function sendStartingMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Hello! Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+          "buttons":[
+            
+            {
+              "type":"postback",
+              "title":"Yeah! Why not?",
+              "payload":"yes2ndConv"
+            },
+            {
+              "type":"postback",
+              "title":"No, not now.",
+              "payload":"no2ndConv"
+            }
+          ]
+        }
+      }
+    }
+  };  
+
+  callSendAPI(messageData);
 }
 function sendGenericMessage(recipientId) {
   var messageData = {
