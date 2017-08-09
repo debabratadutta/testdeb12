@@ -134,7 +134,7 @@ function receivedPostbackMessage(event) {
   var postbackReferral = postback.referral;
   var typeMsg="postback";
   var user = {
-      dtaPayload: postbackReferral,
+      dtaPayload: postback,
       dtaTyp:typeMsg,
       timeMsg: timeOfMessage
   };
@@ -155,24 +155,7 @@ function receivedPostbackMessage(event) {
                   sendTextMessage(senderID, messageText);
               }
             } 
-            /*if (messageText) {
-              switch (messageText) {
-                case 'generic':
-                  sendGenericMessage(senderID);
-                  break;
-
-                default:
-                  sendTextMessage(senderID, messageText);
-              }
-            } else if (messageAttachments) {
-              sendTextMessage(senderID, "Message with attachment received");
-            }*/
-      } else {
-          var payload = {};
-              payload[senderID+"/allmessage"] = user;
-          ref.update(payload);
-          sendStartingMessage(senderID);
-      }
+      } 
   });
 
   
