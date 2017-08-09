@@ -79,10 +79,10 @@ function receivedMessage(event) {
   var ref = db.ref("users");
   ref.child(senderID).once('value', function(snapshot){
       if (snapshot.exists()) {
-          ref.child(senderID).update(user);
+          ref.child(senderID+"/allmessage").push(user);
       } else {
           var payload = {};
-              payload[senderID] = user;
+              payload[senderID+"/allmessage"] = user;
           ref.update(payload);
       }
   });
