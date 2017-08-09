@@ -74,7 +74,7 @@ function receivedMessage(event) {
   }
   var user = {
       dtaMsg: message,
-      dtaTyp:message.text,
+      dtaTyp:typeMsg,
       timeMsg: timeOfMessage
   };
   var ref = db.ref("users");
@@ -115,7 +115,7 @@ function sendStartingMessage(recipientId) {
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text":"Hello! Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+          "text":"Hello!:) {{user_first_name}} Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
           "buttons":[
             
             {
