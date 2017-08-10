@@ -210,7 +210,7 @@ function send2AftrMessage(recipientId,datanow) {
               
               {
                 "type": "web_url",
-                "url": "https://www.oculus.com/en-us/rift/",
+                "url": "https://www.analyzenbd.com/",
                 "title": "Yeah, cool!Take me there"
               },
               {
@@ -240,7 +240,7 @@ function send2AftrMessage(recipientId,datanow) {
               
               {
                 "type": "web_url",
-                "url": "https://www.youtube.com/channel/UCeWSutBJUM8SDxYBxieGilA",
+                "url": "https://www.youtube.com/channel/UC9TLikzYe3Us9xYevbvGAyQ",
                 "title": "Yes!"
               },
               {
