@@ -113,7 +113,7 @@ function receivedMessage(event) {
 }
 //MY WIT AI
 function sendforWitai(senderID,dataentity){
-    switch (postbackPayloadg) {
+    switch (dataentity) {
           case 'ourclients':
               sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/analyzen-clients/","Our clients are our power. we always seek for good and challenging client.Do you want to see our client?");//sendSndMessage(senderID,true);
               break;                
