@@ -170,21 +170,24 @@ function sendStartingMessage(recipientId) {
       "attachment":{
         "type":"template",
         "payload":{
-          "template_type":"button",
-          "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
-          "buttons":[
-            
-            {
-              "type":"postback",
-              "title":"Yeah! Why not?",
-              "payload":"yes2ndConv"
-            },
-            {
-              "type":"postback",
-              "title":"No, not now.",
-              "payload":"no2ndConv"
-            }
-          ]
+          "template_type":"generic",
+          "elements":[
+            "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+            "buttons":[
+              
+              {
+                "type":"postback",
+                "title":"Yeah! Why not?",
+                "payload":"yes2ndConv"
+              },
+              {
+                "type":"postback",
+                "title":"No, not now.",
+                "payload":"no2ndConv"
+              }
+            ] 
+          }
+        ]
         }
       }
     }
