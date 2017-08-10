@@ -96,7 +96,7 @@ function receivedMessage(event) {
                   break;
 
                 default:
-                  sendTextMessage(senderID, messageText);
+                  checkwhMsgmatch(senderID, messageText);
               }
             } else if (messageAttachments) {
               sendTextMessage(senderID, "Message with attachment received");
@@ -112,7 +112,7 @@ function receivedMessage(event) {
   
 }
 //MY WIT AI
-function sendforWitai(dataentity){
+function sendforWitai(senderID,dataentity){
     switch (postbackPayloadg) {
           case 'ourclients':
               sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/analyzen-clients/","Our clients are our power. we always seek for good and challenging client.Do you want to see our client?");//sendSndMessage(senderID,true);
@@ -127,19 +127,19 @@ function sendforWitai(dataentity){
               //send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
               break;
           default:
-              send2AftrMessage(recipientId,"yes");
+              send2AftrMessage(senderID,"yes");
               //sendTextMessage(senderID, " DD");
               break;
     }
 }
 //myWIT Function
-function checkwhMsgmatch(){
-  client.message('Want to know about analyzen ?', {})
+function checkwhMsgmatch(senderID,maindatamsg){
+  client.message(maindatamsg, {})
     .then((data) => {
       var alldataentity=data.entities;
       var keysall=Object.keys(alldataentity);
       //console.log('Yay, got Wit.ai response: '+keysall[0]);
-      sendforWitai(keysall[0]);
+      sendforWitai(senderID,keysall[0]);
     })
     .catch(
 
@@ -186,7 +186,7 @@ function receivedPostbackMessage(event) {
                   break;
 
                 default:
-                  checkwhMsgmatch();
+                  //checkwhMsgmatch();
                   //sendTextMessage(senderID, " DD");
                   break;
               }
