@@ -145,10 +145,10 @@ function receivedPostbackMessage(event) {
             if (postbackPayloadg) {
               switch (postbackPayloadg) {
                 case 'yes2ndConv':
-                   sendSndMessage(senderID,true);
+                   send2StartingMessage(senderID);//sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                   sendSndMessage(senderID,false);
+                   send2StartingMessage(senderID);//sendSndMessage(senderID,false);
                   break;
 
                 default:
@@ -183,6 +183,39 @@ function sendStartingMessage(recipientId) {
               "type":"postback",
               "title":"No, not now.",
               "payload":"no2ndConv"
+            }
+          ]
+        }
+      }
+    }
+  };  
+
+  callSendAPI(messageData);
+}
+
+//MY 2ndTest Text
+function send2StartingMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Nxt A",
+          "buttons":[
+            
+            {
+              "type":"postback",
+              "title":"Afdf",
+              "payload":"yes3ndConv"
+            },
+            {
+              "type":"postback",
+              "title":"OPPP",
+              "payload":"no3ndConv"
             }
           ]
         }
