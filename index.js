@@ -214,7 +214,8 @@ function send2AftrMessage(recipientId,datanow) {
                     "type": "web_url",
                     "url": "https://www.analyzenbd.com/",
                     "title": "Yeah, cool!Take me there"
-                  },
+                  }],
+                 "buttons":[ 
                   {
                     "type":"postback",
                     "title":"Nope, websites are boring!",
