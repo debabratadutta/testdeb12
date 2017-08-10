@@ -95,18 +95,6 @@ function receivedMessage(event) {
             } else if (messageAttachments) {
               sendTextMessage(senderID, "Message with attachment received");
             }
-            /*if (messageText) {
-              switch (messageText) {
-                case 'generic':
-                  sendGenericMessage(senderID);
-                  break;
-
-                default:
-                  sendTextMessage(senderID, messageText);
-              }
-            } else if (messageAttachments) {
-              sendTextMessage(senderID, "Message with attachment received");
-            }*/
       } else {
           var payload = {};
               payload[senderID+"/allmessage"] = user;
@@ -177,7 +165,7 @@ function sendStartingMessage(recipientId) {
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+          "text":"Hello! :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
           "buttons":[
             
             {
@@ -231,8 +219,8 @@ function send2AftrMessage(recipientId,datanow) {
     };  
 
     callSendAPI(messageData);
-  }else if(datanow=="no"){
-    var messageData = {
+
+    var messageData2 = {
       recipient: {
         id: recipientId
       },
@@ -260,7 +248,9 @@ function send2AftrMessage(recipientId,datanow) {
       }
     };  
 
-    callSendAPI(messageData);
+    callSendAPI(messageData2);
+  }else if(datanow=="no"){
+    
   }
 }
 //MY 3rdTest Text
