@@ -20,6 +20,7 @@
     "ejs": "^2.4.2",
     "express": "^4.13.4",
     "firebase-admin": "^5.1.0",
+    "node-wit": "^4.3.0",
     "request": "^2.81.0"
   },
   "engines": {

@@ -5,6 +5,8 @@ const  bodyParser = require('body-parser');
 const  request = require('request');
 const admin = require("firebase-admin");
 const  app = express();
+const {Wit, log} = require('node-wit');
+const client = new Wit({accessToken: 'KF262HBCZRBKUTKMO6TKJXHEN6FKHEP7'});
 //const serviceAccount = require("config/serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -27,6 +29,10 @@ app.use(bodyParser.json());
 app.get('/', function(req,res){
   res.send('Hello YouTube!')
 })
+
+
+
+
 
 app.get('/webhook/',function(req,res){
   if(req.query['hub.verify_token']===token){
@@ -105,6 +111,40 @@ function receivedMessage(event) {
 
   
 }
+//MY WIT AI
+function sendforWitai(dataentity){
+    switch (postbackPayloadg) {
+          case 'ourclients':
+              sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/analyzen-clients/","Our clients are our power. we always seek for good and challenging client.Do you want to see our client?");//sendSndMessage(senderID,true);
+              break;                
+          case 'whatwedo':
+              sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/analyzen-services/","We can take any kind of challenging Digital & social media work load.Wana see what we do?");//sendSndMessage(senderID,false);
+              break;                
+          case 'analyzen':
+              sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/about-analyzen/","Analyzen is based on 4 values - Passion, Resilience, Delivery, and Leadership and Teamwork.Want to know about us?");//sendSndMessage(senderID,false);
+              break;               
+          case 'vacancy':
+              //send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
+              break;
+          default:
+              send2AftrMessage(recipientId,"yes");
+              //sendTextMessage(senderID, " DD");
+              break;
+    }
+}
+//myWIT Function
+function checkwhMsgmatch(){
+  client.message('Want to know about analyzen ?', {})
+    .then((data) => {
+      var alldataentity=data.entities;
+      var keysall=Object.keys(alldataentity);
+      //console.log('Yay, got Wit.ai response: '+keysall[0]);
+      sendforWitai(keysall[0]);
+    })
+    .catch(
+
+    );
+}
 //POST BACK
 function receivedPostbackMessage(event) {
   var senderID = event.sender.id;
@@ -146,7 +186,9 @@ function receivedPostbackMessage(event) {
                   break;
 
                 default:
-                  sendTextMessage(senderID, " DD");
+                  checkwhMsgmatch();
+                  //sendTextMessage(senderID, " DD");
+                  break;
               }
             } 
       } 
@@ -317,7 +359,31 @@ function send3AftrMessage(recipientId,datanow,nodata) {
     callSendAPI(messageData);
   }
 }
-  
+function sendAiAftrwebMessage(recipientId,urlfrweb,textmsg) {
+  var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":textmsg,
+            "buttons":[
+              
+              {
+                "type": "web_url",
+                "url": urlfrweb,
+                "title": "Yeah, cool!"
+              }
+            ]
+          }
+        }
+      }
+    };  
+    callSendAPI(messageData);
+} 
 function sendGenericMessage(recipientId) {
   var messageData = {
     recipient: {
