@@ -148,7 +148,7 @@ function receivedPostbackMessage(event) {
                    send2AftrMessage(senderID,"yes");//sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                   send2AftrMessage(senderID,"yes");//sendSndMessage(senderID,false);
+                   send2AftrMessage(senderID,"no");//sendSndMessage(senderID,false);
                   break;
 
                 default:
