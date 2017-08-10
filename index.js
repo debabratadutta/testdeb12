@@ -149,6 +149,12 @@ function receivedPostbackMessage(event) {
                   break;                
                 case 'no2ndConv':
                    send2AftrMessage(senderID,"no");//sendSndMessage(senderID,false);
+                  break;                
+                case 'no3rdConv1':
+                   send3AftrMessage(senderID,"no","1");//sendSndMessage(senderID,false);
+                  break;               
+                case 'no3rdConv2':
+                   send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
                   break;
 
                 default:
@@ -200,33 +206,7 @@ function send2AftrMessage(recipientId,datanow) {
       recipient: {
         id: recipientId
       },
-      
       "message":{
-        "attachment":{
-          "type":"template",
-          "payload":{
-            "template_type":"generic",
-            "elements":[
-               {
-                "title":"Want a peek in our website? That’s like our Analyzopedia!",
-                "buttons":[
-                  {
-                    "type": "web_url",
-                    "url": "https://www.analyzenbd.com/",
-                    "title": "Yeah, cool!Take me there"
-                  }],
-                 "buttons":[ 
-                  {
-                    "type":"postback",
-                    "title":"Nope, websites are boring!",
-                    "payload":"no3rdConv1"
-                  }             
-                ]      
-              }
-            ]
-          }
-        }
-      }/*"message":{
         "attachment":{
           "type":"template",
           "payload":{
@@ -237,17 +217,17 @@ function send2AftrMessage(recipientId,datanow) {
               {
                 "type": "web_url",
                 "url": "https://www.analyzenbd.com/",
-                "title": "Yeah, cool!Take me there"
+                "title": "Yeah, cool!"
               },
               {
                 "type":"postback",
-                "title":"Nope, websites are boring!",
+                "title":"Nope, boring!",
                 "payload":"no3rdConv1"
               }
             ]
           }
         }
-      }*/
+      }
     };  
 
     callSendAPI(messageData);
@@ -271,7 +251,7 @@ function send2AftrMessage(recipientId,datanow) {
               },
               {
                 "type":"postback",
-                "title":"No, something else!",
+                "title":"No",
                 "payload":"no3rdConv2"
               }
             ]
@@ -283,9 +263,9 @@ function send2AftrMessage(recipientId,datanow) {
     callSendAPI(messageData);
   }
 }
-//MY 2nd Text
-function sendSndMessage(recipientId,anstype) {
-  if(anstype){
+//MY 3rdTest Text
+function send3AftrMessage(recipientId,datanow,nodata) {
+  if(nodata=="1" && datanow=="no"){
     var messageData = {
       recipient: {
         id: recipientId
@@ -295,55 +275,57 @@ function sendSndMessage(recipientId,anstype) {
           "type":"template",
           "payload":{
             "template_type":"button",
-            "text":" ",
+            "text":"Nothing’s boring about us. Wanna see some cool videos?",
             "buttons":[
               
-                {
-                  "type":"postback",
-                  "title":"Want a peek in our website? That’s like our Analyzopedia!",
-                  "payload":"website3rdConv"
-                },
-                {
-                  "type":"postback",
-                  "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
-                  "payload":"videos3rdConv"
-                }
+              {
+                "type": "web_url",
+                "url": "https://www.youtube.com/channel/UC9TLikzYe3Us9xYevbvGAyQ",
+                "title": "Yeah, sure!"
+              },
+              {
+                "type": "web_url",
+                "url": "https://www.analyzenbd.com/",
+                "title":"No, Web"
+              }
             ]
           }
         }
       }
-    };
-  } else{
-    var messageData = {
-      recipient: {
-        id: recipientId
-      },
-      "message":{
-        "attachment":{
-          "type":"template",
-          "payload":{
-            "template_type":"button",
-            "text":" ",
-            "buttons":[
-              
-                {
-                  "type":"postback",
-                  "title":"Want a peek in our website? That’s like our Analyzopedia!",
-                  "payload":"website3rdConv"
-                },
-                {
-                  "type":"postback",
-                  "title":"Want to watch some cool videos of ours? We have a YouTube channel!",
-                  "payload":"videos3rdConv"
-                }
-            ]
-          }
-        }
-      }
-    };
-  } 
+    };  
 
-  callSendAPI(messageData);
+    callSendAPI(messageData);
+  }else if(nodata=="2" && datanow=="no"){
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Website then?",
+            "buttons":[
+              
+              {
+                "type": "web_url",
+                "url": "https://www.analyzenbd.com/",
+                "title": "Cool."
+              },
+              {
+                "type": "web_url",
+                "url": "https://www.youtube.com/channel/UC9TLikzYe3Us9xYevbvGAyQ",
+                "title": "Nope, YouTube"
+              }
+            ]
+          }
+        }
+      }
+    };  
+
+    callSendAPI(messageData);
+  }
 }
   
 function sendGenericMessage(recipientId) {
