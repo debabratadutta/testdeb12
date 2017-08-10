@@ -148,7 +148,7 @@ function receivedPostbackMessage(event) {
                    send2StartingMessage(senderID);//sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                   send2StartingMessage(senderID);//sendSndMessage(senderID,false);
+                   send3StartingMessage(senderID);//sendSndMessage(senderID,false);
                   break;
 
                 default:
@@ -205,6 +205,38 @@ function send2StartingMessage(recipientId) {
         "payload":{
           "template_type":"button",
           "text":"Nxt A",
+          "buttons":[
+            
+            {
+              "type":"postback",
+              "title":"Afdf",
+              "payload":"yes3ndConv"
+            },
+            {
+              "type":"postback",
+              "title":"OPPP",
+              "payload":"no3ndConv"
+            }
+          ]
+        }
+      }
+    }
+  };  
+
+  callSendAPI(messageData);
+}
+//MY 3ndTest Text
+function send3StartingMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Nxt A3",
           "buttons":[
             
             {
