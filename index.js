@@ -170,24 +170,21 @@ function sendStartingMessage(recipientId) {
       "attachment":{
         "type":"template",
         "payload":{
-          "template_type":"generic",
-          "elements":[
-            "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
-            "buttons":[
-              
-              {
-                "type":"postback",
-                "title":"Yeah! Why not?",
-                "payload":"yes2ndConv"
-              },
-              {
-                "type":"postback",
-                "title":"No, not now.",
-                "payload":"no2ndConv"
-              }
-            ] 
-          }
-        ]
+          "template_type":"button",
+          "text":"Hello! :) :-) Rainmaker here to answer your questions. Since it’s our first conversation, would you like to know about Analyzen first?",
+          "buttons":[
+            
+            {
+              "type":"postback",
+              "title":"Yeah! Why not?",
+              "payload":"yes2ndConv"
+            },
+            {
+              "type":"postback",
+              "title":"No, not now.",
+              "payload":"no2ndConv"
+            }
+          ]
         }
       }
     }
@@ -203,7 +200,32 @@ function send2AftrMessage(recipientId,datanow) {
       recipient: {
         id: recipientId
       },
+      
       "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"generic",
+            "elements":[
+               {
+                "title":"Want a peek in our website? That’s like our Analyzopedia!",
+                "buttons":[
+                  {
+                    "type": "web_url",
+                    "url": "https://www.analyzenbd.com/",
+                    "title": "Yeah, cool!Take me there"
+                  },
+                  {
+                    "type":"postback",
+                    "title":"Nope, websites are boring!",
+                    "payload":"no3rdConv1"
+                  }             
+                ]      
+              }
+            ]
+          }
+        }
+      }/*"message":{
         "attachment":{
           "type":"template",
           "payload":{
@@ -224,7 +246,7 @@ function send2AftrMessage(recipientId,datanow) {
             ]
           }
         }
-      }
+      }*/
     };  
 
     callSendAPI(messageData);
