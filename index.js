@@ -145,10 +145,10 @@ function receivedPostbackMessage(event) {
             if (postbackPayloadg) {
               switch (postbackPayloadg) {
                 case 'yes2ndConv':
-                   send2StartingMessage(senderID);//sendSndMessage(senderID,true);
+                   send2AftrMessage(senderID,"yes");//sendSndMessage(senderID,true);
                   break;                
                 case 'no2ndConv':
-                   send3StartingMessage(senderID);//sendSndMessage(senderID,false);
+                   send2AftrMessage(senderID,"yes");//sendSndMessage(senderID,false);
                   break;
 
                 default:
@@ -194,68 +194,68 @@ function sendStartingMessage(recipientId) {
 }
 
 //MY 2ndTest Text
-function send2StartingMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    "message":{
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"button",
-          "text":"Nxt A",
-          "buttons":[
-            
-            {
-              "type":"postback",
-              "title":"Afdf",
-              "payload":"yes3ndConv"
-            },
-            {
-              "type":"postback",
-              "title":"OPPP",
-              "payload":"no3ndConv"
-            }
-          ]
+function send2AftrMessage(recipientId,datanow) {
+  if(datanow=="yes"){
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Want a peek in our website? That’s like our Analyzopedia!",
+            "buttons":[
+              
+              {
+                "type": "web_url",
+                "url": "https://www.oculus.com/en-us/rift/",
+                "title": "Yeah, cool!Take me there"
+              },
+              {
+                "type":"postback",
+                "title":"Nope, websites are boring!",
+                "payload":"no3rdConv1"
+              }
+            ]
+          }
         }
       }
-    }
-  };  
+    };  
 
-  callSendAPI(messageData);
-}
-//MY 3ndTest Text
-function send3StartingMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    "message":{
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"button",
-          "text":"Nxt A3",
-          "buttons":[
-            
-            {
-              "type":"postback",
-              "title":"Afdf",
-              "payload":"yes3ndConv"
-            },
-            {
-              "type":"postback",
-              "title":"OPPP",
-              "payload":"no3ndConv"
-            }
-          ]
+    callSendAPI(messageData);
+  }else if(datanow=="no"){
+    var messageData = {
+      recipient: {
+        id: recipientId
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Want to watch some cool videos of ours? We have a YouTube channel!",
+            "buttons":[
+              
+              {
+                "type": "web_url",
+                "url": "https://www.youtube.com/channel/UCeWSutBJUM8SDxYBxieGilA",
+                "title": "Yes!"
+              },
+              {
+                "type":"postback",
+                "title":"No, something else!",
+                "payload":"no3rdConv2"
+              }
+            ]
+          }
         }
       }
-    }
-  };  
+    };  
 
-  callSendAPI(messageData);
+    callSendAPI(messageData);
+  }
 }
 //MY 2nd Text
 function sendSndMessage(recipientId,anstype) {
