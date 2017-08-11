@@ -96,7 +96,9 @@ function receivedMessage(event) {
                   break;
 
                 default:
-                  checkwhMsgmatch(senderID, messageText);
+                  sendTextMessage(senderID, messageText);
+                  break;
+                  //checkwhMsgmatch(senderID, messageText);
               }
             } else if (messageAttachments) {
               sendTextMessage(senderID, "Message with attachment received");
@@ -112,6 +114,7 @@ function receivedMessage(event) {
   
 }
 //MY WIT AI
+/*
 function sendforWitai(senderID,dataentity){
     switch (dataentity) {
           case 'ourclients':
@@ -131,8 +134,9 @@ function sendforWitai(senderID,dataentity){
               //sendTextMessage(senderID, " DD");
               break;
     }
-}
+}*/
 //myWIT Function
+/*
 function checkwhMsgmatch(senderID,maindatamsg){
   client.message(maindatamsg, {})
     .then((data) => {
@@ -144,7 +148,7 @@ function checkwhMsgmatch(senderID,maindatamsg){
     .catch(
 
     );
-}
+}*/
 //POST BACK
 function receivedPostbackMessage(event) {
   var senderID = event.sender.id;
@@ -187,7 +191,7 @@ function receivedPostbackMessage(event) {
 
                 default:
                   //checkwhMsgmatch();
-                  //sendTextMessage(senderID, " DD");
+                  sendTextMessage(senderID, " DD");
                   break;
               }
             } 
