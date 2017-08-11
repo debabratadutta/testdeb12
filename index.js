@@ -127,6 +127,15 @@ function sendforWitai(senderID,dataentity){
               sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/about-analyzen/","Analyzen is based on 4 values - Passion, Resilience, Delivery, and Leadership and Teamwork.Want to know about us?");//sendSndMessage(senderID,false);
               break;               
           case 'vacancy':
+              sendTextMessage(senderID,"Then send your CV via an owl at mail@analyzenbd.com and wait for your call!");
+              //send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
+              break;              
+          case 'business':
+              sendTextMessage(senderID,"Then send your CV via an owl at mail@analyzenbd.com and wait for your call!");
+              //send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
+              break;              
+          case 'wit/greetings':
+              sendTextMessage(senderID,"Hi, good to hear you again.Tell me how can i assist you.");              
               //send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
               break;
           default:
@@ -188,10 +197,25 @@ function receivedPostbackMessage(event) {
                 case 'no3rdConv2':
                    send3AftrMessage(senderID,"no","2");//sendSndMessage(senderID,false);
                   break;
+                case 'businsEmail':
+                  sendTextMessage(senderID,"Share mail address. I’ll make contact.Or mail your details at mail@analyzenbd.com and we’ll get in touch in no time.");//sendSndMessage(senderID,false);
+                  break;
+                case 'businsPhone':
+                  sendTextMessage(senderID,"Share your contacts then, we’ll call you in no time!.Otherwise call at this no +88-01708126311");//sendSndMessage(senderID,false);
+                  break;
+                case 'businsOffice':
+                  sendTextMessage(senderID,"Please share your address and contact. We’ll find you out even if Google Map fails.");//sendSndMessage(senderID,false);
+                  sendAiAftrwebMessage(senderID,"https://www.analyzenbd.com/contact-analyzen/","You can meet us at our place that will be more pleasure for us");//sendSndMessage(senderID,false);
+              
+                  break;
+                case 'businsHere':
+                  sendTextMessage(senderID,"Aw shucks! To tell you the truth, I’m just a house elf. Let me fetch my master. Kindly wait till he returns!");//sendSndMessage(senderID,false);
+                  break;
 
                 default:
                   //checkwhMsgmatch();
-                  sendTextMessage(senderID, " DD");
+                  sendTextMessage(senderID, "I didn't get you crealry.");
+                  send2AftrMessage(senderID,"yes");
                   break;
               }
             } 
@@ -427,6 +451,48 @@ function sendGenericMessage(recipientId) {
               payload: "Payload for second bubble",
             }]
           }]
+        }
+      }
+    }
+  };  
+
+  callSendAPI(messageData);
+}
+//MY Business
+function sendMybusinessMsg(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Aha! Business! How would you like to reach us?",
+          "buttons":[
+            
+            {
+              "type":"postback",
+              "title":"Email",
+              "payload":"businsEmail"
+            },
+            {
+              "type":"postback",
+              "title":"Over Phone",
+              "payload":"businsPhone"
+            },
+            {
+              "type":"postback",
+              "title":"Meet Me",
+              "payload":"businsOffice"
+            },
+            {
+              "type":"postback",
+              "title":"Talk Over Here",
+              "payload":"businsHere"
+            }
+          ]
         }
       }
     }
