@@ -114,7 +114,7 @@ function receivedMessage(event) {
   
 }
 //MY WIT AI
-/*
+
 function sendforWitai(senderID,dataentity){
     switch (dataentity) {
           case 'ourclients':
@@ -134,9 +134,9 @@ function sendforWitai(senderID,dataentity){
               //sendTextMessage(senderID, " DD");
               break;
     }
-}*/
+}
 //myWIT Function
-/*
+
 function checkwhMsgmatch(senderID,maindatamsg){
   client.message(maindatamsg, {})
     .then((data) => {
@@ -148,7 +148,7 @@ function checkwhMsgmatch(senderID,maindatamsg){
     .catch(
 
     );
-}*/
+}
 //POST BACK
 function receivedPostbackMessage(event) {
   var senderID = event.sender.id;
